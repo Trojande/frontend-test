@@ -26,6 +26,24 @@
 	</noscript>
 </head>
 <body>
-    s1
+    <div class="booksearch" ng-app="booksearch" ng-controller="booksearchCtrl">
+        <input type="text" class="booksearch__search" ng-model="searchText" ng-change="searchFunc()">
+        {{searchText}} {{res}}  
+        <div class="book">
+            <div class="book__details">
+                <div class="book__title"></div>
+                <div class="book-description"></div>
+            </div>
+        </div>
+        <div class="book">
+        
+        </div>
+        <div class="book">
+        
+        </div>
+    </div>
+    
+    <script src="js/libs.min.js"></script>
+    <script src="js/common.js"></script>
 </body>
 </html>
