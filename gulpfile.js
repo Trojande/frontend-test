@@ -46,6 +46,7 @@ gulp.task('libs', function() {
     var jsFiles = ['src/js/*']
 	return gulp.src([
 		'bower_components/angular/angular.js',
+        'bower_components/angular-route/angular-route.js',
         'bower_components/jquery/dist/jquery.js'
 		])
 		.pipe(concat('libs.min.js'))

@@ -1,46 +1,47 @@
-"use strict";
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Search = function () {
-    function Search(token) {
-        _classCallCheck(this, Search);
-
-        this.token = token;
-    }
-
-    _createClass(Search, [{
-        key: "getbooks",
-        value: function getbooks(searchInput) {
-            $.ajax({
-                type: "POST",
-                url: "http://api.repo.nypl.org/api/v1/items/search?q=" + searchInput + "&publicDomainOnly=true",
-                dataType: "json",
-                headers: {
-                    'Authorization': 'Token token=' + this.token
-                },
-                beforeSend: function beforeSend(xhr) {
-                    xhr.setRequestHeader("Authorization", "Token token=" + this.token);
-                },
-                success: function success() {
-                    return 'yes';
-                }
-            });
-        }
-    }]);
-
-    return Search;
-}();
+'use strict';
 
 var app = angular.module('booksearch', []);
+app.config(function ($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+});
+app.service('searchService', function ($http) {
+    var searchService = {
+        setToken: function setToken(token) {
+            this.token = token;
+        },
+        getBooks: function getBooks(searchInput) {
+            var req = {
+                method: "GET",
+                url: "http://localhost:8080/api/v1/items/search?q=" + searchInput,
+                headers: {
+                    'Authorization': "Token token=" + this.token,
+                    'Content-type': 'application/json; charset=utf8'
+                },
+                withCredentials: true
+            };
+            var promise = $http(req).then(function (response) {
+                console.log(response['data']['nyplAPI']['response']['result']);
+                return response.data;
+            });
+            return promise;
+        }
 
-app.controller('booksearchCtrl', function ($scope) {
-    $scope.counter = 0;
-    $scope.searchFunc = function () {
-        $scope.counter++;
     };
-    var search = new Search('qqcvhrm19752modk');
-    $scope.res = search.getbooks('cat');
+    return searchService;
+});
+
+app.controller('booksearchCtrl', function ($scope, searchService) {
+
+    var search = searchService;
+    search.setToken('qqcvhrm19752modk');
+    $scope.searchFunc = function () {
+        search.getBooks($scope.searchText).then(function (d) {
+            return $scope.books = d['nyplAPI']['response']['result'];
+        });
+    };
+    /*
+    search.getBooks('cat').then(function(d) {
+        $scope.res = d['nyplAPI']['response']['result']['0']['imageID'];    
+    });
+    */
 });

@@ -1,0 +1,15 @@
+    <div class="booksearch">
+        <div class="booksearch__form">
+            <input type="text" class="booksearch__search" ng-model="searchText">
+            <button class="booksearch__button" type="button" ng-click="searchFunc()">Search</button>
+        </div>
+        <div class="books">
+            <div ng-repeat="book in books" class="book">
+                <div class="book__details">
+                    <div class="book__title">{{book.title}}</div>
+                    <div class="book__type">{{book.typeOfResource}}</div>
+                    <div class="book_link"><a href="#/book/{{book.uuid}}">See more</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
