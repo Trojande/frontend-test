@@ -1,24 +1,24 @@
-    var gulp           = require('gulp'),
-		gutil          = require('gulp-util' ),
-		sass           = require('gulp-sass'),
-		browserSync    = require('browser-sync'),
-		concat         = require('gulp-concat'),
-		uglify         = require('gulp-uglify'),
-		cleanCSS       = require('gulp-clean-css'),
-		rename         = require('gulp-rename'),
-		del            = require('del'),
-		imagemin       = require('gulp-imagemin'),
-		pngquant       = require('imagemin-pngquant'),
-		cache          = require('gulp-cache'),
-		autoprefixer   = require('gulp-autoprefixer'),
-		fileinclude    = require('gulp-file-include'),
-		gulpRemoveHtml = require('gulp-remove-html'),
-		bourbon        = require('node-bourbon'),
-		ftp            = require('vinyl-ftp'),
-        filter         = require('gulp-filter'),
-        mainBowerFiles = require('main-bower-files');
+var gulp           = require('gulp'),
+    gutil          = require('gulp-util' ),
+    sass           = require('gulp-sass'),
+    browserSync    = require('browser-sync'),
+    concat         = require('gulp-concat'),
+    uglify         = require('gulp-uglify'),
+    cleanCSS       = require('gulp-clean-css'),
+    rename         = require('gulp-rename'),
+    del            = require('del'),
+    imagemin       = require('gulp-imagemin'),
+    pngquant       = require('imagemin-pngquant'),
+    cache          = require('gulp-cache'),
+    autoprefixer   = require('gulp-autoprefixer'),
+    fileinclude    = require('gulp-file-include'),
+    gulpRemoveHtml = require('gulp-remove-html'),
+    bourbon        = require('node-bourbon'),
+    ftp            = require('vinyl-ftp'),
+    filter         = require('gulp-filter'),
+    mainBowerFiles = require('main-bower-files'),
+    babel          = require('gulp-babel');
         
-        //wowjs          = require('wowjs');
 
 gulp.task('browser-sync', function() {
 	browserSync({
@@ -87,7 +87,7 @@ gulp.task('build', ['removedist', 'buildhtml', 'sass', 'libs', 'imagemin'], func
 
 	var buildFonts = gulp.src('app/fonts/**/*').pipe(gulp.dest('dist/fonts'));
 
-	var buildJs = gulp.src('app/js/**/*').pipe(gulp.dest('dist/js'));
+	var buildJs = gulp.src('app/js/**/*').pipe(babel()).pipe(gulp.dest('dist/js'));
 
 });
 
